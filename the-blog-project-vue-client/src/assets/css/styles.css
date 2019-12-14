@@ -1,0 +1,61 @@
+body {
+  font-size: 16px;
+  font-family: "DroidNaskh-Regular","Helvetica";
+}
+
+/******* form related */
+.form-group.required .control-label:after { 
+    color: #d00;
+    content: "*";
+    position: absolute;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-family: 'FontAwesome';
+    font-weight: normal;
+    font-size: 14px;
+    content: "\f069";
+}
+
+form-control:disabled, .form-control[readonly] {
+    background-color: #fff4b8;
+    opacity: 1;
+}
+
+
+
+/****************** Section Header */
+h3.section {
+    background-color: rgba(215, 215, 215, 1);
+    padding: 10px;
+}
+
+
+
+/****************** Grid */
+ul.block-grid-3 {
+   display: block;
+   overflow: hidden;
+   padding: 0;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+ul.block-grid-3 > li {
+   width: 33.33333%;
+   float: left;
+   padding: 0 12px 12px;
+   display: block;
+   height: auto;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+ul.block-grid-3 > li:nth-of-type(3n+1) {
+   clear: left;
+}
+
+/****************** Section Header */
+.bg-center-image {
+  background-repeat: no-repeat;
+  background-position: center center;
+}

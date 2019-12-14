@@ -1,0 +1,35 @@
+/*Arabic Fonts Style Sheet*/
+
+@font-face {
+  font-family: 'khalid-art-bold';
+  src: url('khalid-art-bold.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'hacen-typographer';
+  src: url('hacen-typographer.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DroidKufi-Bold';
+  src: url('DroidKufi-Bold.eot') format('embedded-opentype'), url('DroidKufi-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'DroidKufi-Regular';
+  src: url('DroidKufi-Regular.eot') format('embedded-opentype'), url('DroidKufi-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'DroidNaskh-Bold';
+  src: url('DroidNaskh-Bold.eot') format('embedded-opentype'), url('DroidNaskh-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'DroidNaskh-Regular';
+  src: url('DroidNaskh-Regular.eot') format('embedded-opentype'), url('DroidNaskh-Regular.woff') format('woff');
+}
