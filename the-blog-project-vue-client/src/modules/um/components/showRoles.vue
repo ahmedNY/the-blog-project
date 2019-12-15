@@ -21,7 +21,13 @@
         <tr v-for="role in roles" :key="role.id">
           <td scope="row">{{role.id}}</td>
           <td>{{role.roleName}}</td>
-          <td></td>
+          <td>
+            <span
+              v-for="permission in role.permissions"
+              class="badge badge-info"
+              :key="permission.id"
+            >{{permission.action}}:{{permission.resource}}</span>
+          </td>
           <td></td>
           <td nowrap>
             <button class="btn btn-primary btn-sm mx-2">تعديل</button>

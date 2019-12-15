@@ -11,10 +11,15 @@ import { UserQueriesController } from './controllers/queries.controller';
 import { FindAllRolesQuery } from './queries/role.findAll';
 import { FindAllPermissionsQuery } from './queries/permission.findAll';
 import { FindUserByIdQuery } from './queries/user.findById';
+import { ChangeUserPasswordCommand } from './commands/user.changeUserPassword';
+import { ChangeMyPasswordCommand } from './commands/user.changeMyPassword';
+import { UpdateUserCommand } from './commands/user.updateUser';
 
 @Module({
   imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([User, Role, Permission])],
-  providers: [UsersService, AddUserCommand, LoginUserCommand, FindAllUsersQuery, FindAllRolesQuery, FindAllPermissionsQuery, FindUserByIdQuery],
+  providers: [UsersService,
+    AddUserCommand, LoginUserCommand, ChangeUserPasswordCommand, ChangeMyPasswordCommand, UpdateUserCommand,
+    FindAllUsersQuery, FindAllRolesQuery, FindAllPermissionsQuery, FindUserByIdQuery],
   exports: [UsersService, AddUserCommand, LoginUserCommand],
   controllers: [UserQueriesController],
 })

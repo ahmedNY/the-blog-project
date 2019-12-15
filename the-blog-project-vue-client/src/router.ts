@@ -11,7 +11,7 @@ export default new Router({
     {
       path: '/',
       component: () =>
-        import('@/components/index.vue'),
+        import('@/modules/main/components/index.vue'),
     },
     ...blogRoutes,
     ...umRoutes,

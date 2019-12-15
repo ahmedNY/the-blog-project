@@ -27,7 +27,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import store from "@/vuex/index";
-import { User } from "../um/models/user.model";
+import { User } from "@/modules/um/models/user.model";
 
 @Component({})
 export default class Navigation extends Vue {

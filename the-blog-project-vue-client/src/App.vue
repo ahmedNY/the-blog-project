@@ -31,7 +31,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Navigation from "@/modules/layout/navigation.vue";
+import Navigation from "@/modules/main/components/navigation.vue";
 import store from "@/vuex/index";
 import Login from "@/modules/auth/components/Login.vue";
 

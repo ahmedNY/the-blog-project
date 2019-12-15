@@ -1,8 +1,8 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../entities/user.entity";
-import { Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
-import { LoginUserDTO } from "../dtos/loginUser.dto";
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../entities/user.entity';
+import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { LoginUserDTO } from '../dtos/loginUser.dto';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
