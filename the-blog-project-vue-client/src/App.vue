@@ -60,28 +60,4 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
-
-/******* Sub Navigation Bar */
-.navbar-light {
-  background-color: #757575;
-  border-color: #990022;
-  border-width: 0px 0px 0px 0px;
-  margin-bottom: 15px;
-}
-.navbar-light .navbar-brand {
-  color: #f3f3f3;
-  padding: 5px 15px;
-  font-size: 30px;
-  line-height: 40px;
-}
-.navbar-light .navbar-nav > li > a {
-  color: #f3f3f3;
-}
-.navbar-light .navbar-nav > .active > a,
-.navbar-light .navbar-nav > .active > a:hover,
-.navbar-light .navbar-nav > .active > a:focus,
-.navbar-light .navbar-nav a.router-link-active {
-  color: #fff;
-  background-color: #ef8b36;
-}
 </style>
