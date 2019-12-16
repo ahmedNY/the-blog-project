@@ -14,24 +14,22 @@
           <th>الدور</th>
           <th>الصلاحيات</th>
           <th>المستخدمين</th>
-          <th></th>
+          <th align="left">
+            <button @click="addRole()" class="btn btn-primary float-left btn-sm">إضافة</button>
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="role in roles" :key="role.id">
           <td scope="row">{{role.id}}</td>
           <td>{{role.roleName}}</td>
-          <td>
-            <span
-              v-for="permission in role.permissions"
-              class="badge badge-info"
-              :key="permission.id"
-            >{{permission.action}}:{{permission.resource}}</span>
-          </td>
-          <td></td>
-          <td nowrap>
-            <button class="btn btn-primary btn-sm mx-2">تعديل</button>
-            <button class="btn btn-danger btn-sm">حذف</button>
+          <td>{{role.permissions.length}}</td>
+          <td>{{role.users.length}}</td>
+          <td align="left" nowrap>
+            <router-link
+              :to="`/um/showRoleDetail?roleId=${role.id}`"
+              class="btn btn-primary btn-sm"
+            >عرض</router-link>
           </td>
         </tr>
       </tbody>
@@ -48,11 +46,39 @@ import { Role } from "@/modules/um/models/role.model";
 export default class extends Vue {
   roles: Role[] = [];
   async created() {
+    this.loadData();
+  }
+
+  async loadData() {
     try {
       this.roles = await cqClient.query("role.findAll");
     } catch (err) {
       console.log(err);
     }
+  }
+
+  async addRole() {
+    try {
+      const roleName = window.prompt("roleName");
+      await cqClient.command("role.addRole", { roleName });
+      this.loadData();
+    } catch (err) {}
+  }
+
+  async updateRole(role: Role) {
+    try {
+      const roleName = window.prompt("roleName");
+      await cqClient.command("role.updateRole", { id: role.id, roleName });
+      this.loadData();
+    } catch (err) {}
+  }
+
+  async deleteRole(role: Role) {
+    try {
+      const roleName = window.prompt("roleName");
+      await cqClient.command("role.deleteRole", { id: role.id });
+      this.loadData();
+    } catch (err) {}
   }
 }
 </script>

@@ -15,12 +15,24 @@ export default [
                 component: () => import('@/modules/um/components/showUsers.vue'),
             },
             {
+                path: 'showUserDetail',
+                component: () => import('@/modules/um/components/showUserDetail.vue'),
+            },
+            {
                 path: 'showRoles',
                 component: () => import('@/modules/um/components/showRoles.vue'),
             },
             {
-                path: 'showPermissions',
-                component: () => import('@/modules/um/components/showPermissions.vue'),
+                path: 'showRoleDetail',
+                component: () => import('@/modules/um/components/showRoleDetail.vue'),
+            },
+            {
+                path: 'showModules',
+                component: () => import('@/modules/um/components/showModules.vue'),
+            },
+            {
+                path: 'editUser',
+                component: () => import('@/modules/um/components/editUser.vue'),
             },
         ],
     }

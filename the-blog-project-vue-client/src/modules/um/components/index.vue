@@ -13,9 +13,9 @@
       >قائمة المستخدمين</router-link>
       <router-link to="/um/showRoles" class="list-group-item list-group-item-action">قائمة الأدوار</router-link>
       <router-link
-        to="/um/showPermissions"
+        to="/um/showModules"
         class="list-group-item list-group-item-action"
-      >قائمة الصلاحيات</router-link>
+      >قائمة الموديلات</router-link>
     </div>
   </div>
 </template>

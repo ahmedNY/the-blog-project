@@ -1,5 +1,8 @@
 export class User {
-    id: number;
-    displayName: number;
-    mobileNumber: number;
+    id?: number;
+    displayName?: string;
+    mobileNumber?: string;
+    password?: string;
+    createdAt?: string;
+    roles?: string[];
 }

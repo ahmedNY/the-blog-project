@@ -14,13 +14,20 @@ import { FindUserByIdQuery } from './queries/user.findById';
 import { ChangeUserPasswordCommand } from './commands/user.changeUserPassword';
 import { ChangeMyPasswordCommand } from './commands/user.changeMyPassword';
 import { UpdateUserCommand } from './commands/user.updateUser';
+import { UserCommandsController } from './controllers/commands.controller';
+import { Module as Mod } from './entities/module.entity';
+import { FindAllModulesQuery } from './queries/module.findAll';
+import { FindModuleByIdQuery } from './queries/module.findById';
+import { FindRoleByIdQuery } from './queries/role.findById';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([User, Role, Permission])],
+  imports: [TypeOrmModule.forRoot(), TypeOrmModule.forFeature([Mod, User, Role, Permission])],
   providers: [UsersService,
     AddUserCommand, LoginUserCommand, ChangeUserPasswordCommand, ChangeMyPasswordCommand, UpdateUserCommand,
-    FindAllUsersQuery, FindAllRolesQuery, FindAllPermissionsQuery, FindUserByIdQuery],
+    FindAllUsersQuery, FindAllRolesQuery, FindAllPermissionsQuery, FindUserByIdQuery,
+    FindAllModulesQuery, FindModuleByIdQuery, FindRoleByIdQuery,
+  ],
   exports: [UsersService, AddUserCommand, LoginUserCommand],
-  controllers: [UserQueriesController],
+  controllers: [UserQueriesController, UserCommandsController],
 })
 export class UsersModule { }

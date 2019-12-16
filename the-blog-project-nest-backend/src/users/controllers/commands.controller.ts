@@ -9,8 +9,8 @@ import { ChangeMyPasswordDTO } from '../dtos/changeMyPassword.dto';
 import { UpdateUserDTO } from '../dtos/updateUser.dto';
 import { ChangeUserPasswordDTO } from '../dtos/changeUserPassword.dto';
 
-@Controller('/api/queries')
-export class UserQueriesController {
+@Controller('/api/commands')
+export class UserCommandsController {
     constructor(
         private readonly addUserCommand: AddUserCommand,
         private readonly updateUserCommand: UpdateUserCommand,

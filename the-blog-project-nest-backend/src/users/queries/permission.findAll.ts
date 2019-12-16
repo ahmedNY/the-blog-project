@@ -10,6 +10,6 @@ export class FindAllPermissionsQuery {
     ) { }
 
     async execute(): Promise<Permission[]> {
-        return this.permissionRepository.find();
+        return this.permissionRepository.find({ relations: ['roles', 'module'], order: { id: 'ASC' } });
     }
 }

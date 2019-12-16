@@ -6,7 +6,7 @@
           <b-nav-item to="/um/showUsers">المستخدمين</b-nav-item>
           <li class="nav-seperator"></li>
           <b-nav-item to="/um/showRoles">الأدوار</b-nav-item>
-          <b-nav-item to="/um/showPermissions">الصلاحيات</b-nav-item>
+          <b-nav-item to="/um/showModules">الموديلات</b-nav-item>
           <li class="nav-seperator"></li>
           <b-nav-item-dropdown right text="التقارير" seperate>
             <b-dropdown-item to="/um/showLoginReports">سجل الدخول</b-dropdown-item>

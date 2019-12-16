@@ -1,7 +1,7 @@
-import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn } from "typeorm";
-import { Role } from "./role.entity";
+import { Entity, Column, CreateDateColumn, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Role } from './role.entity';
 
-@Entity("um_user")
+@Entity('um_user')
 export class User {
     @PrimaryGeneratedColumn()
     id;
@@ -12,10 +12,11 @@ export class User {
     @Column()
     mobileNumber: string;
 
-    @Column("text")
+    @Column('text')
     password: string;
 
-    @Column("json")
+    @ManyToMany(type => Role, role => role.users)
+    @JoinTable({ name: 'um_user_roles' })
     roles: Role[];
 
     @CreateDateColumn()

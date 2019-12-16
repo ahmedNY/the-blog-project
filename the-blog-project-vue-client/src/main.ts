@@ -20,6 +20,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUserSecret, faBackspace, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import BootstrapVue from 'bootstrap-vue';
+
 // import VueCurrencyFilter from 'vue-currency-filter';
 import PortalVue from 'portal-vue';
 

@@ -4,12 +4,13 @@ import { Role } from '../entities/role.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class FindAllRolesQuery {
+export class FindRoleByIdQuery {
     constructor(
         @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     ) { }
 
-    async execute(): Promise<Role[]> {
-        return this.roleRepository.find({ relations: ['permissions', 'users'], order: { id: 'ASC' } });
+    async execute(roleId: number): Promise<Role> {
+        const role = await this.roleRepository.findOne(roleId, { relations: ['users', 'permissions', 'permissions.module'] });
+        return role;
     }
 }

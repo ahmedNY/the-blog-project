@@ -10,6 +10,8 @@ export class FindUserByIdQuery {
     ) { }
 
     async execute(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId);
+        const user = await this.userRepository.findOne(userId);
+        delete user.password;
+        return user;
     }
 }

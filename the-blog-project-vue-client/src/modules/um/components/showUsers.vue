@@ -29,7 +29,10 @@
             {{row.mobileNumber}}
           </td>
           <td align="left">
-            <router-link :to="`/um/editUser?userId=${row.id}`" class="btn btn-primary btn-sm">تعديل</router-link>
+            <router-link
+              :to="`/um/showUserDetail?userId=${row.id}`"
+              class="btn btn-primary btn-sm"
+            >عرض</router-link>
           </td>
         </tr>
       </tbody>
