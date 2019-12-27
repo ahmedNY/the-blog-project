@@ -4,7 +4,7 @@ import { Role } from '../entities/role.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class FindRoleByIdQuery {
+export default class Role_FindById {
     constructor(
         @InjectRepository(Role) private readonly roleRepository: Repository<Role>,
     ) { }

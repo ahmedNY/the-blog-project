@@ -15,7 +15,7 @@
           <th>الصلاحيات</th>
           <th>المستخدمين</th>
           <th align="left">
-            <button @click="addRole()" class="btn btn-primary float-left btn-sm">إضافة</button>
+            <button @click="newRole()" class="btn btn-primary float-left btn-sm">إضافة</button>
           </th>
         </tr>
       </thead>
@@ -28,12 +28,24 @@
           <td align="left" nowrap>
             <router-link
               :to="`/um/showRoleDetail?roleId=${role.id}`"
-              class="btn btn-primary btn-sm"
+              class="btn btn-primary btn-sm mx-1"
             >عرض</router-link>
+            <button @click="editRole(role)" class="btn btn-primary btn-sm mx-1">تعديل</button>
+            <button @click="removeRole(role)" class="btn btn-danger btn-sm mx-1">حذف</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- Modal -->
+    <b-modal ref="addRoleModal" id="addRoleModal" title="إضافة دور" @ok="saveRole()">
+      <form>
+        <div class="form-group">
+          <label>الإسم</label>
+          <input type="text" class="form-control" v-model="currentRole.roleName" />
+        </div>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -44,6 +56,10 @@ import { Role } from "@/modules/um/models/role.model";
 
 @Component({})
 export default class extends Vue {
+  roleName: string = "";
+  currentRole: Role = {
+    roleName: ""
+  };
   roles: Role[] = [];
   async created() {
     this.loadData();
@@ -57,28 +73,46 @@ export default class extends Vue {
     }
   }
 
-  async addRole() {
+  newRole() {
+    this.currentRole = {
+      id: 0,
+      roleName: ""
+    };
+    this.$bvModal.show("addRoleModal");
+  }
+
+  editRole(role: Role) {
+    this.currentRole = role;
+    this.$bvModal.show("addRoleModal");
+  }
+
+  async saveRole() {
     try {
-      const roleName = window.prompt("roleName");
-      await cqClient.command("role.addRole", { roleName });
+      if (this.currentRole.id === 0) {
+        await cqClient.command("role.addRole", {
+          roleName: this.currentRole.roleName
+        });
+      } else {
+        await cqClient.command("role.updateRole", {
+          roleId: this.currentRole.id,
+          roleName: this.currentRole.roleName
+        });
+      }
       this.loadData();
     } catch (err) {}
   }
 
-  async updateRole(role: Role) {
+  async removeRole(role: Role) {
     try {
-      const roleName = window.prompt("roleName");
-      await cqClient.command("role.updateRole", { id: role.id, roleName });
+      const ok = confirm("هل أنت متأكد من أنك تريد حذف الدور");
+      if (!ok) {
+        return;
+      }
+      await cqClient.command("role.removeRole", { id: role.id });
       this.loadData();
-    } catch (err) {}
-  }
-
-  async deleteRole(role: Role) {
-    try {
-      const roleName = window.prompt("roleName");
-      await cqClient.command("role.deleteRole", { id: role.id });
-      this.loadData();
-    } catch (err) {}
+    } catch (err) {
+      alert("could not delete role");
+    }
   }
 }
 </script>

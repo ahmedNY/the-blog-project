@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UsersService } from '../users/users.service';
+import { UsersService } from '../users/services/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync } from 'bcryptjs';
 import { User } from 'src/users/entities/user.entity';
@@ -41,7 +41,7 @@ export class AuthService {
         };
 
         // generate JWT token
-        const jwt = this.jwtService.sign(jwtPayload);
+        const jwt = this.jwtService.sign(jwtPayload, { expiresIn: '1 day' });
 
         return {
             token: jwt,

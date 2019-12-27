@@ -1,8 +1,8 @@
-import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../entities/user.entity";
-import { Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
-import { AddUserDTO } from "../dtos/addUser.dto";
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../entities/user.entity';
+import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { AddUserDTO } from '../dtos/addUser.dto';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -20,6 +20,6 @@ export class AddUserCommand {
         user.roles = [];
         // save user
         this.userRepository.save(user);
-        return { success: true, message: 'User added successfully' }
+        return { success: true, message: 'User added successfully' };
     }
 }

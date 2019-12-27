@@ -4,7 +4,7 @@ import { Permission } from '../entities/permission.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class FindAllPermissionsQuery {
+export default class Permission_FindAll {
     constructor(
         @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
     ) { }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="role">
     <b-breadcrumb class="d-print-none">
       <b-breadcrumb-item to="/" text="البداية" />
       <b-breadcrumb-item to="/um" text="إدارة المستخدمين" />
@@ -7,8 +7,7 @@
       <b-breadcrumb-item :active="true" text="معلومات الدور" />
     </b-breadcrumb>
 
-    <h5>معلومات الدور: {{role.roleName}}</h5>
-    <hr />
+    <h5>معلومات الدور:</h5>
 
     <table class="table table-sm table-inverse">
       <tbody>
@@ -32,8 +31,8 @@
           <th>&nbsp;</th>
           <td>
             <span class="float-left">
-              <button class="btn btn-primary btn-sm mx-2">تعديل</button>
-              <button class="btn btn-danger btn-sm">حذف</button>
+              <button v-b-modal.editRoleModal class="btn btn-primary btn-sm mx-2">تعديل</button>
+              <button @click="removeRole()" class="btn btn-danger btn-sm">حذف</button>
             </span>
           </td>
         </tr>
@@ -44,19 +43,21 @@
     <table class="table table-sm table-inverse">
       <thead class="thead-inverse">
         <tr>
+          <th class="bg-light">ID</th>
           <th class="bg-light">الموديول</th>
           <th class="bg-light">الصلاحية</th>
           <th class="bg-light">
-            <button class="btn btn-primary btn-sm float-left">إضافة</button>
+            <button v-b-modal.addPermissionModal class="btn btn-primary btn-sm float-left">إضافة</button>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="permission in role.permissions" :key="permission.id">
+          <td>{{permission.id}}</td>
           <td>{{permission.module.moduleName}}</td>
           <td>{{permission.action}}:{{permission.resource}}</td>
           <td align="left">
-            <button type="button" class="btn btn-danger btn-sm">حذف</button>
+            <button @click="removePermission(permission)" class="btn btn-danger btn-sm">حذف</button>
           </td>
         </tr>
       </tbody>
@@ -85,6 +86,37 @@
         </tr>
       </tbody>
     </table>
+
+    <!-- Edit Role Modal -->
+    <b-modal ref="editRoleModal" id="editRoleModal" title="تعديل دور" @ok="saveRole()">
+      <form>
+        <div class="form-group">
+          <label>الإسم</label>
+          <input type="text" class="form-control" v-model="role.roleName" />
+        </div>
+      </form>
+    </b-modal>
+
+    <!-- Edit Role Modal -->
+    <b-modal
+      ref="addPermissionModal"
+      id="addPermissionModal"
+      title="إضافة صلاحيات"
+      @ok="addPermission()"
+    >
+      <form>
+        <div class="form-group">
+          <label for>اختر الصلاحية</label>
+          <select class="form-control" v-model="selectedPermission">
+            <option
+              v-for="permission in availablePermissions"
+              :key="permission.id"
+              :value="permission"
+            >{{permission.module.moduleName}}/{{permission.action}}:{{permission.resource}}</option>
+          </select>
+        </div>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -92,10 +124,24 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Role } from "../models/role.model";
 import { cqClient } from "../../../lib/cqClient";
+import { Permission } from "../models/permission.model";
 
 @Component({})
 export default class extends Vue {
-  role: Role = {};
+  role: Role = null;
+  permissions: Permission[] = [];
+  selectedPermission: Permission = null;
+  get availablePermissions() {
+    if (!this.role || !this.permissions) {
+      return [];
+    }
+    return this.permissions.filter(permission => {
+      return !this.role.permissions.find(rp => {
+        return String(rp.id) === String(permission.id);
+      });
+    });
+  }
+
   created() {
     this.loadData();
   }
@@ -105,29 +151,55 @@ export default class extends Vue {
     try {
       const roleId = Number(this.$route.query.roleId);
       this.role = await cqClient.query(`role.findById?roleId=${roleId}`);
+      this.permissions = await cqClient.query(`permission.findAll`);
     } catch (err) {}
   }
-  async updateRole() {
+  async saveRole() {
     try {
       const roleId = Number(this.$route.query.roleId);
-      const roleName = window.prompt("roleName");
-      await cqClient.command("role.updateRole", { id: roleId, roleName });
+      const roleName = this.role.roleName;
+      await cqClient.command("role.updateRole", { roleId, roleName });
       this.loadData();
     } catch (err) {}
   }
-  async deleteRole() {
+  async removeRole() {
     try {
+      const ok = confirm("هل أنت متأكد من أنك تريد حذف الدور?");
+      if (!ok) {
+        return;
+      }
       const roleId = Number(this.$route.query.roleId);
-      const roleName = window.prompt("roleName");
-      await cqClient.command("role.deleteRole", { id: roleId });
-      this.loadData();
+      await cqClient.command("role.removeRole", { roleId });
+      this.$router.push("/um/showRoles");
     } catch (err) {}
   }
   /** user related */
   addUser() {}
   removeUser() {}
   /** permission related */
-  addPermission() {}
-  removePermission() {}
+  async addPermission(permission: Permission) {
+    try {
+      await cqClient.command("role.addPermission", {
+        roleId: this.role.id,
+        permissionId: this.selectedPermission.id
+      });
+      this.loadData();
+    } catch (err) {
+      console.log(err);
+      window.alert("could not add permission");
+    }
+  }
+  async removePermission(permission: Permission) {
+    try {
+      await cqClient.command("role.removePermission", {
+        roleId: this.role.id,
+        permissionId: permission.id
+      });
+      this.loadData();
+    } catch (err) {
+      console.log(err);
+      window.alert("could not remove permission");
+    }
+  }
 }
 </script>

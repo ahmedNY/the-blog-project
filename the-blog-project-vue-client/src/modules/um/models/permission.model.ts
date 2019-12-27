@@ -3,7 +3,8 @@ import { Role } from './role.model';
 
 export class Permission {
     id: number;
-    permissionName: number;
-    module: Module;
-    roles: Role;
+    action: string;
+    resource: string;
+    module?: Module;
+    roles?: Role;
 }

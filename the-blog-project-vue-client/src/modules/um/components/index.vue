@@ -28,16 +28,5 @@ import { User } from "../models/user.model";
 @Component({})
 export default class extends Vue {
   users: User[] = [];
-
-  created() {
-    this.searchData();
-  }
-  async searchData() {
-    try {
-      this.users = await cqClient.query(`user.findAll`);
-    } catch (error) {
-      console.log(error);
-    }
-  }
 }
 </script>

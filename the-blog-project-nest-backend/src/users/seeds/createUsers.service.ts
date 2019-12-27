@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AddUserCommand } from './commands/user.addUser';
-import { AddUserDTO } from './dtos/addUser.dto';
+import { AddUserCommand } from '../commands/user.addUser';
+import { AddUserDTO } from '../dtos/addUser.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
-import { Role } from './entities/role.entity';
-import { Permission } from './entities/permission.entity';
-import { LoginUserCommand } from './commands/user.loginUser';
+import { User } from '../entities/user.entity';
+import { Role } from '../entities/role.entity';
+import { Permission } from '../entities/permission.entity';
+import { LoginUserCommand } from '../commands/user.loginUser';
 
 describe('UsersService', () => {
   let addUserCommand: AddUserCommand;

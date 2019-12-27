@@ -4,12 +4,13 @@ import { Module } from '../entities/module.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class FindModuleByIdQuery {
+export default class Module_FindById {
     constructor(
         @InjectRepository(Module) private readonly moduleRepository: Repository<Module>,
     ) { }
 
-    async execute(moduleId: number): Promise<Module> {
+    async execute(query): Promise<Module> {
+        const moduleId: number = query.moduleId;
         const module = await this.moduleRepository.findOne(moduleId);
         return module;
     }

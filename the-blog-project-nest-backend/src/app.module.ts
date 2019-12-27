@@ -9,8 +9,8 @@ import { BlogModule } from './blog/blog.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(),
-    AuthModule,
     UsersModule,
+    AuthModule,
     BlogModule,
   ],
   controllers: [AppController],
