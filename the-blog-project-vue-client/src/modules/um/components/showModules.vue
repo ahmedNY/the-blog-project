@@ -14,7 +14,10 @@
           <th>الموديول</th>
           <th>الصلاحيات</th>
           <th>
-            <button @click="showNewModuleForm" class="btn btn-primary btn-sm mx-2 float-left">إضافة</button>
+            <button
+              @click="showNewModuleForm()"
+              class="btn btn-primary btn-sm mx-2 float-left"
+            >إضافة</button>
           </th>
         </tr>
       </thead>
@@ -27,12 +30,15 @@
               v-for="permission in module.permissions"
               class="badge badge-info m-1"
               :key="permission.id"
+              @click="showEditPermissionForm(permission)"
             >{{permission.action}}:{{permission.resource}}</div>
           </td>
           <td align="left" nowrap>
-            <router-link></router-link>
+            <button
+              @click="showNewPermissionForm(module)"
+              class="btn btn-primary btn-sm mx-2"
+            >إضافة صلاحية</button>
             <button @click="showEditModuleForm(module)" class="btn btn-primary btn-sm mx-2">تعديل</button>
-            <button @click="removeModule(module)" class="btn btn-danger btn-sm">حذف</button>
           </td>
         </tr>
       </tbody>
@@ -46,25 +52,49 @@
           <input type="text" class="form-control" v-model="currentModule.moduleName" />
         </div>
       </form>
+      <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <!-- Emulate built in modal footer ok and cancel button actions -->
+        <b-button size="sm" variant="primary" @click="ok()">حفظ</b-button>
+        <b-button size="sm" variant="warning" @click="cancel()">إلغاء</b-button>
+        <!-- Button with custom close trigger value -->
+        <b-button
+          v-if="currentModule.id !== 0"
+          size="sm"
+          variant="danger"
+          @click="removeModule(currentModule)"
+        >حذف</b-button>
+      </template>
     </b-modal>
 
     <!-- Edit Permission Modal -->
     <b-modal
       ref="editPermissionModal"
-      id="editRoleModal"
-      title="تعديل الصلاحية"
+      id="editPermissionModal"
+      title="إضافة / تعديل صلاحية"
       @ok="savePermission()"
     >
       <form v-if="currentPermission">
         <div class="form-group">
           <label>Action</label>
-          <input type="text" class="form-control" v-model="permission.action" />
+          <input type="text" class="form-control" v-model="currentPermission.action" />
         </div>
         <div class="form-group">
           <label>Resource</label>
-          <input type="text" class="form-control" v-model="permission.resource" />
+          <input type="text" class="form-control" v-model="currentPermission.resource" />
         </div>
       </form>
+      <template v-slot:modal-footer="{ ok, cancel, hide }">
+        <!-- Emulate built in modal footer ok and cancel button actions -->
+        <b-button size="sm" variant="primary" @click="ok()">حفظ</b-button>
+        <b-button size="sm" variant="warning" @click="cancel()">إلغاء</b-button>
+        <!-- Button with custom close trigger value -->
+        <b-button
+          v-if="currentPermission.id !== 0"
+          size="sm"
+          variant="danger"
+          @click="removePermission(currentPermission)"
+        >حذف</b-button>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -122,30 +152,40 @@ export default class extends Vue {
     }
   }
   // permissions crud
-  showNewPermissionForm() {
+  showNewPermissionForm(module: Module) {
+    this.currentModule = module;
     this.currentPermission = {
       id: 0,
       action: "",
       resource: ""
     };
+    this.$bvModal.show("editPermissionModal");
   }
-  showEditPermissionform(permission: Permission) {
+  showEditPermissionForm(permission: Permission) {
     this.currentPermission = permission;
+    this.$bvModal.show("editPermissionModal");
   }
-  savePermission() {
+  async savePermission() {
     try {
-      if (this.currentModule.id === 0) {
-        cqClient.command("permission.insertPermission", this.currentModule);
+      if (this.currentPermission.id === 0) {
+        await cqClient.command(
+          "permission.insertPermission",
+          this.currentPermission
+        );
       } else {
-        cqClient.command("permission.updatePermission", this.currentModule);
+        await cqClient.command(
+          "permission.updatePermission",
+          this.currentPermission
+        );
       }
+      this.loadData();
     } catch (err) {
       console.log(err);
     }
   }
   removePermission() {
     try {
-      cqClient.command("permission.removePermission", this.currentModule);
+      cqClient.command("permission.removePermission", this.currentPermission);
     } catch (err) {
       console.log(err);
     }

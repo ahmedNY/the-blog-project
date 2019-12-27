@@ -3,7 +3,6 @@ import { Module } from '../entities/module.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InsertModuleDTO } from '../dtos/InsertModule.dto';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class InsertModuleCommand {
