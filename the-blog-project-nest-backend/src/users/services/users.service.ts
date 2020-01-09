@@ -12,6 +12,15 @@ export class UsersService {
     async findOne(mobileNumber: string): Promise<User | undefined> {
         return this.userRepository.findOne({
             where: { mobileNumber },
+            relations: ['roles', 'roles.permissions'],
         });
+    }
+
+    async findUserWithRolesAndPermissions(mobileNumber: string): Promise<User | undefined> {
+        return this.userRepository.findOne({
+            where: { mobileNumber },
+            relations: ['roles', 'roles.permissions', 'roles.permissions.module'],
+        });
+
     }
 }

@@ -11,7 +11,10 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav v-if="isAuthenticated" class="ml-auto">
-          <b-nav-item class="bg-secondary">{{currentUser ? currentUser.displayName : ''}}</b-nav-item>
+          <b-nav-item
+            to="/auth/profile"
+            class="bg-secondary"
+          >{{currentUser ? currentUser.displayName : ''}}</b-nav-item>
           <b-nav-item @click="logout()">تسجيل الخروج</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-else class="ml-auto">

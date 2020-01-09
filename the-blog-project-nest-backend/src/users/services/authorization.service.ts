@@ -4,6 +4,10 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from '../entities/permission.entity';
 
+const permissionUrlWithTag = /(.*):(.*)@(.*)/i;
+const permissionUrl = /(.*):(.*)/i;
+const roleUrlWithTag = /(.*)@(.*)/i;
+
 @Injectable()
 export class AuthorizationService {
     constructor(
@@ -11,6 +15,20 @@ export class AuthorizationService {
         @InjectRepository(Permission) private readonly permissionRepository: Repository<Permission>,
     ) { }
 
+    async checkUserPermission(userId: number, url: string): Promise<boolean> {
+        const withTagRegexResults = permissionUrlWithTag.exec(url);
+        if (withTagRegexResults) {
+            const [, action, resource, tag] = withTagRegexResults;
+            return this.hasPermission(userId, action, resource, tag);
+        }
+        const urlRegexResults = permissionUrl.exec(url);
+        if (urlRegexResults) {
+            const [, action, resource] = urlRegexResults;
+            return this.hasPermission(userId, action, resource);
+        }
+        console.log(`checkUserPermission() could not process permission url: ${url}, returning true`);
+        return true;
+    }
     async hasPermission(userId: number, action: string, resource: string, tag?: string): Promise<boolean> {
         const count = await this.userRepository.createQueryBuilder('user')
             .innerJoinAndSelect('user.roles', 'role')
@@ -21,7 +39,15 @@ export class AuthorizationService {
             .getCount();
         return (count > 0);
     }
-
+    async checkUserRole(userId: number, url: string): Promise<boolean> {
+        const withTagResults = roleUrlWithTag.exec(url);
+        if (withTagResults) {
+            const [, role, tag] = withTagResults;
+            return this.hasRole(userId, role, tag);
+        } else {
+            return this.hasRole(userId, url);
+        }
+    }
     async hasRole(userId: number, role: string, tag?: string): Promise<boolean> {
         const count = await this.userRepository.createQueryBuilder('user')
             .innerJoinAndSelect('user.roles', 'role')

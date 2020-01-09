@@ -12,8 +12,8 @@ export class PermissionGuard implements CanActivate {
     canActivate(
         context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
-        const permission = this.reflector.get<{ action: string, resource: string }>('permission', context.getHandler());
-        if (!permission) {
+        const permissionUrl = this.reflector.get<string>('permission', context.getHandler());
+        if (!permissionUrl) {
             return true;
         }
         const request = context.switchToHttp().getRequest();
@@ -21,6 +21,6 @@ export class PermissionGuard implements CanActivate {
         if (!user) {
             return false;
         }
-        return this.authorizationService.hasPermission(request.user.id, permission.action, permission.resource);
+        return this.authorizationService.checkUserPermission(request.user.id, permissionUrl);
     }
 }

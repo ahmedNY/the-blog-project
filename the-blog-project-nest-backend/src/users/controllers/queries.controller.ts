@@ -56,7 +56,7 @@ export class UserQueriesController {
     }
 
     @Get('module.findAll')
-    @CheckPermission('manage', 'um')
+    @CheckPermission('manage:um')
     async module_findAll(@Req() req): Promise<Module[]> {
         return this.module_FindAll.execute({});
     }

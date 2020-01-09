@@ -20,6 +20,8 @@ export default new Vuex.Store({
       window.localStorage.setItem('user', JSON.stringify(loginResponse.user));
       state.isAuthenticated = true;
       state.user = loginResponse.user;
+      state.permissions = loginResponse.permissions;
+      state.roles = loginResponse.roles;
     },
     CLEAR_SESSION(state) {
       state.isAuthenticated = false;

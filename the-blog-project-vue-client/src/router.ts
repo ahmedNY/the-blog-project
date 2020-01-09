@@ -13,6 +13,10 @@ export default new Router({
       component: () =>
         import('@/modules/main/components/index.vue'),
     },
+    {
+      path: '/auth/profile',
+      component: () => import('@/modules/auth/components/showUserProfile.vue')
+    },
     ...blogRoutes,
     ...umRoutes,
   ],

@@ -23,6 +23,8 @@
         </span>
       </div>
     </footer>
+
+    <notifications group="foo" />
   </div>
 </template>
 
@@ -43,7 +45,13 @@ export default class App extends Vue {
     return this.$store.state.isAuthenticated;
   }
 
-  mounted() {}
+  mounted() {
+    this.$notify({
+      group: "foo",
+      title: "Important message",
+      text: "Hello user! This is a notification!"
+    });
+  }
 
   created() {}
 

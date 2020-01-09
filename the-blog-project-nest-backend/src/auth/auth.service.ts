@@ -32,12 +32,17 @@ export class AuthService {
     async generateLoginResponse(user: User) {
         // this is called after user successfully login, and current user is instantiated
         // we should return the response after user logged in here such as token and user profiles
+        const currentUser = await this.usersService.findUserWithRolesAndPermissions(user.mobileNumber);
+        const permissions = [];
+        currentUser.roles.forEach(r => permissions.push(...r.permissions));
+        const roles = currentUser.roles;
 
         // preparing the payload
         const jwtPayload: JwtPayload = {
             id: user.id,
             mobileNumber: user.mobileNumber,
             displayName: user.displayName,
+            createdAt: user.createdAt,
         };
 
         // generate JWT token
@@ -46,8 +51,8 @@ export class AuthService {
         return {
             token: jwt,
             user: jwtPayload,
-            roles: [],
-            permissions: [],
+            roles,
+            permissions,
         };
     }
 }
