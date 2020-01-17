@@ -21,7 +21,7 @@ describe('UsersService', () => {
   });
 
   it('should add user', async () => {
-    expect(addUserCommand).toBeDefined();
+    expect('addUserCommand').toBeDefined();
     const dto: AddUserDTO = {
       displayName: 'Administrator',
       password: '1234',

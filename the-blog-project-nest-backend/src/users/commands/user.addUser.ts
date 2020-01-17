@@ -3,7 +3,7 @@ import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { AddUserDTO } from '../dtos/addUser.dto';
-import * as bcrypt from 'bcryptjs';
+import { passwordHash } from '../../lib/password-hash';
 
 @Injectable()
 export class AddUserCommand {
@@ -13,10 +13,7 @@ export class AddUserCommand {
 
     execute(dto: AddUserDTO): any {
         const user = this.userRepository.create(dto);
-        // generate hash in password
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(dto.password, salt);
-        user.password = hash;
+        user.password = passwordHash(dto.password);
         user.roles = [];
         // save user
         this.userRepository.save(user);
