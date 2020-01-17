@@ -1,3 +1,3 @@
 export interface QueryInterface {
-    execute(args: any): Promise<any>;
+    execute(...optionalParams: any[]): Promise<any>;
 }

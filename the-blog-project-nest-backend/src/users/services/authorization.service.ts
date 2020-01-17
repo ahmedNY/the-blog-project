@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../entities/user.entity';
+import { User } from '../../dawak/entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permission } from '../entities/permission.entity';
 
-const permissionUrlWithTag = /(.*):(.*)@(.*)/i;
-const permissionUrl = /(.*):(.*)/i;
-const roleUrlWithTag = /(.*)@(.*)/i;
+const permissionUrlWithTagRegex = /(.*):(.*)@(.*)/i;
+const permissionUrlRegex = /(.*):(.*)/i;
+const roleUrlWithTagRegex = /(.*)@(.*)/i;
 
 @Injectable()
 export class AuthorizationService {
@@ -16,12 +16,12 @@ export class AuthorizationService {
     ) { }
 
     async checkUserPermission(userId: number, url: string): Promise<boolean> {
-        const withTagRegexResults = permissionUrlWithTag.exec(url);
+        const withTagRegexResults = permissionUrlWithTagRegex.exec(url);
         if (withTagRegexResults) {
             const [, action, resource, tag] = withTagRegexResults;
             return this.hasPermission(userId, action, resource, tag);
         }
-        const urlRegexResults = permissionUrl.exec(url);
+        const urlRegexResults = permissionUrlRegex.exec(url);
         if (urlRegexResults) {
             const [, action, resource] = urlRegexResults;
             return this.hasPermission(userId, action, resource);
@@ -40,7 +40,7 @@ export class AuthorizationService {
         return (count > 0);
     }
     async checkUserRole(userId: number, url: string): Promise<boolean> {
-        const withTagResults = roleUrlWithTag.exec(url);
+        const withTagResults = roleUrlWithTagRegex.exec(url);
         if (withTagResults) {
             const [, role, tag] = withTagResults;
             return this.hasRole(userId, role, tag);
